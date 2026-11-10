@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Command Access (CAT) Pricing Tool</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Command Access Technologies — Pricing Tool</h1>
+    <div class="sub" id="sourceLine">Loading price data…</div>
+  </header>
+
+  <div class="warn-banner">
+    <b>Prices shown are tariff-inclusive list prices.</b> Each price is published list × 1.035 (3.5% tariff surcharge), rounded to the dollar. Complete hinges and pivots are plain list (no tariff). <b>No discount tiers are built in</b> — type your own multiplier or % off below. Catalog page hints (from the 36-page CAT catalog PDF) cover only about <span id="pageCoveragePct">—</span> of line items; no hint does not mean a price is wrong. Rows with a red or amber badge have conflicting or unverified source data — confirm with CAT Customer Service (888-622-2377) before quoting them.
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-panel="panel-lookup">Lookup</button>
+    <button class="tab-btn" data-panel="panel-quote">Quote Builder</button>
+    <button class="tab-btn" data-panel="panel-calc">Discount Calculator</button>
+  </div>
+
+  <div class="discount-bar">
+    <div class="mult-row">
+      <div class="discount-field">
+        <label for="multInput">Net multiplier (e.g. 0.45)</label>
+        <input type="number" id="multInput" min="0" max="1" step="0.0001" placeholder="blank = list only">
+      </div>
+      <div class="discount-field">
+        <label for="pctInput">or % off list (e.g. 55)</label>
+        <input type="number" id="pctInput" min="0" max="100" step="0.01" placeholder="blank = list only">
+      </div>
+    </div>
+    <div class="discount-hint">Net = list × multiplier. The two boxes stay in sync. This sets "Net" in Lookup and for newly added quote lines; each quote line's multiplier can still be changed individually.</div>
+  </div>
+
+  <div class="panel active" id="panel-lookup">
+    <div class="toolbar">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search part number, description, or keyword…">
+      <select id="sectionFilter" class="cat-select">
+        <option value="">All sections</option>
+      </select>
+    </div>
+    <div class="results-meta" id="resultsMeta"></div>
+    <div id="results"></div>
+  </div>
+
+  <div class="panel" id="panel-quote">
+    <div id="quoteEmpty" class="empty-state">No lines yet — search in the Lookup tab and click "Add to Quote".</div>
+    <div id="quoteTableWrap" style="overflow-x:auto;">
+      <table class="quote-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Qty</th>
+            <th>Part</th>
+            <th>Description</th>
+            <th>List</th>
+            <th>Multiplier</th>
+            <th>Net Unit</th>
+            <th>Ext. Net</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="quoteBody"></tbody>
+      </table>
+    </div>
+
+    <div class="quote-actions no-print">
+      <button class="btn ghost" id="clearQuoteBtn">Clear Quote</button>
+      <button class="btn ghost" id="csvQuoteBtn">Copy as CSV</button>
+      <button class="btn" id="printQuoteBtn">Print / Save as PDF</button>
+    </div>
+
+    <div class="totals-card" id="quoteTotals">
+      <div class="tot list"><div class="label">List Total</div><div class="val" id="totListVal">$0.00</div></div>
+      <div class="tot savings"><div class="label">Total Savings</div><div class="val" id="totSavingsVal">$0.00</div></div>
+      <div class="tot net"><div class="label">Net Total</div><div class="val" id="totNetVal">$0.00</div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-calc">
+    <div class="calc-card">
+      <h3 style="margin-top:0;">Multiplier ↔ % off ↔ net price</h3>
+      <div class="calc-row">
+        <div class="calc-field">
+          <label for="calcMult">Net multiplier</label>
+          <input type="number" id="calcMult" step="0.0001" min="0" max="1">
+        </div>
+        <div class="calc-field">
+          <label for="calcPct">% off list</label>
+          <input type="number" id="calcPct" step="0.01" min="0" max="100">
+        </div>
+        <div class="calc-field">
+          <label for="calcList">List price ($)</label>
+          <input type="number" id="calcList" step="0.01" min="0" value="100">
+        </div>
+        <div class="calc-field">
+          <label>Net price</label>
+          <div class="pval" id="calcNet">—</div>
+        </div>
+      </div>
+      <div class="discount-hint">Edit the multiplier or % off and the other updates. Net = list × multiplier.</div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    Sections are approximate. Part numbers repeat across sections in this catalog by design (the same base code can price a "complete lockset" in one section and a "chassis only" retrofit in another) — always check the description and context line, not just the part string, before quoting. Prices are for reference; confirm with CAT before placing an order.
+  </footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
