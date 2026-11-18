@@ -31,11 +31,12 @@
         <input type="number" id="multInput" min="0" max="1" step="0.0001" placeholder="blank = list only">
       </div>
       <div class="discount-field">
-        <label for="pctInput">or % off list (e.g. 55)</label>
-        <input type="number" id="pctInput" min="0" max="100" step="0.01" placeholder="blank = list only">
+        <label for="pctInput">or % off list (e.g. 55 or 50-10)</label>
+        <input type="text" inputmode="decimal" id="pctInput" placeholder="55 or 50-10 (chain)" autocomplete="off">
+        <div class="discount-hint" id="pctHint" style="margin-top:4px;"></div>
       </div>
     </div>
-    <div class="discount-hint">Net = list × multiplier. The two boxes stay in sync. This sets "Net" in Lookup and for newly added quote lines; each quote line's multiplier can still be changed individually.</div>
+    <div class="discount-hint">Net = list × multiplier. The two boxes stay in sync. A chain discount like 50-10 means 50% off, then 10% off the remainder (multiplier 0.5 × 0.9 = 0.45, i.e. 55% off in total). This sets "Net" in Lookup and for newly added quote lines; each quote line's multiplier can still be changed individually.</div>
   </div>
 
   <div class="panel active" id="panel-lookup">
@@ -92,8 +93,9 @@
           <input type="number" id="calcMult" step="0.0001" min="0" max="1">
         </div>
         <div class="calc-field">
-          <label for="calcPct">% off list</label>
-          <input type="number" id="calcPct" step="0.01" min="0" max="100">
+          <label for="calcPct">% off list (e.g. 55 or 50-10)</label>
+          <input type="text" inputmode="decimal" id="calcPct" autocomplete="off">
+          <div class="discount-hint" id="calcPctHint" style="margin-top:4px;"></div>
         </div>
         <div class="calc-field">
           <label for="calcList">List price ($)</label>

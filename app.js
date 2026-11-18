@@ -28,7 +28,23 @@
   $all(".tab-btn").forEach(btn => btn.addEventListener("click", () => showPanel(btn.dataset.panel)));
 
   // ---------- global multiplier / % boxes ----------
-  const multInput = $("#multInput"), pctInput = $("#pctInput");
+  const multInput = $("#multInput"), pctInput = $("#pctInput"), pctHint = $("#pctHint");
+
+  // Parses "55" or a chain like "50-10" / "50/10" / "50-10-5" into a net multiplier.
+  // Returns {mult, totalPct, isChain} or null if invalid/empty.
+  function parseDiscount(text) {
+    const t = String(text).trim();
+    if (!t) return null;
+    const parts = t.split(/\s*[-\/]\s*/);
+    if (!parts.every(p => /^\d*\.?\d+$/.test(p))) return null;
+    const nums = parts.map(parseFloat);
+    if (!nums.every(n => n >= 0 && n < 100)) return null;
+    const mult = round4(nums.reduce((acc, n) => acc * (1 - n / 100), 1));
+    if (!validMult(mult)) return null;
+    return { mult, totalPct: round4((1 - mult) * 100), isChain: nums.length > 1 };
+  }
+  const hintText = (d) => d.isChain ? `= ${d.totalPct}% off total · multiplier ${d.mult}` : "";
+
   multInput.addEventListener("input", () => {
     const m = parseFloat(multInput.value);
     if (validMult(m)) {
@@ -38,16 +54,19 @@
       state.mult = null;
       pctInput.value = "";
     }
+    pctHint.textContent = "";
     runSearch();
   });
   pctInput.addEventListener("input", () => {
-    const p = parseFloat(pctInput.value);
-    if (!isNaN(p) && p >= 0 && p < 100) {
-      state.mult = round4(1 - p / 100);
-      multInput.value = state.mult;
+    const d = parseDiscount(pctInput.value);
+    if (d) {
+      state.mult = d.mult;
+      multInput.value = d.mult;
+      pctHint.textContent = hintText(d);
     } else {
       state.mult = null;
       multInput.value = "";
+      pctHint.textContent = pctInput.value.trim() ? "Enter a % like 55, or a chain like 50-10" : "";
     }
     runSearch();
   });
@@ -284,9 +303,11 @@
     calcPct.value = validMult(m) ? round4((1 - m) * 100) : "";
     updateCalcNet();
   });
+  const calcPctHint = $("#calcPctHint");
   calcPct.addEventListener("input", () => {
-    const p = parseFloat(calcPct.value);
-    calcMult.value = (!isNaN(p) && p >= 0 && p < 100) ? round4(1 - p / 100) : "";
+    const d = parseDiscount(calcPct.value);
+    calcMult.value = d ? d.mult : "";
+    calcPctHint.textContent = d ? hintText(d) : (calcPct.value.trim() ? "Enter a % like 55, or a chain like 50-10" : "");
     updateCalcNet();
   });
   calcList.addEventListener("input", updateCalcNet);
