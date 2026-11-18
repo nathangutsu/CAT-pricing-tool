@@ -590,3 +590,31 @@ table.tier-table td.tier-name { color: var(--text-0); font-weight: 700; }
 .flag-badge.sheet { background:rgba(255,190,70,.14); color:#ffc65a; border:1px solid rgba(255,190,70,.4); }
 .flag-note { font-size:12px; color:var(--text-1, #aab); margin-top:4px; line-height:1.4; }
 input.qb-mult { width:78px; }
+
+/* ---- layout fixes: discount bar + calculator ---- */
+.discount-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+.mult-row { gap: 16px; align-items: flex-start; }
+.mult-row .discount-field { flex: 0 1 230px; }
+.discount-field input { width: 100%; max-width: 230px; box-sizing: border-box; }
+.discount-field .discount-hint,
+.calc-field .discount-hint { flex: none; min-height: 1.1em; margin: 0; }
+.discount-bar > .discount-hint { flex: none; max-width: 760px; line-height: 1.45; }
+.calc-row { align-items: flex-start; }
+.calc-field input { width: 150px; box-sizing: border-box; }
+.calc-field .pval { font-family: var(--mono); font-size: 1.1rem; color: var(--green); padding: 8px 0; }
+.mult-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 230px)); gap: 16px; align-items: start; }
+.mult-row .discount-field { flex: none; }
+.discount-bar { flex-wrap: nowrap; }
+table.quote-table td.part-no { white-space: nowrap; }
+table.quote-table th:nth-child(4), table.quote-table td:nth-child(4) { min-width: 300px; font-size: 0.82rem; line-height: 1.35; }
+table.quote-table { min-width: 860px; }
+html { color-scheme: dark; }
+table.quote-table { min-width: 0; }
+table.quote-table td.part-no { white-space: normal; word-break: break-word; min-width: 110px; }
+table.quote-table th:nth-child(4), table.quote-table td:nth-child(4) { min-width: 200px; }
+table.quote-table th, table.quote-table td { padding-left: 8px; padding-right: 8px; }
+input.qb-qty { width: 56px; }
+input.qb-mult { width: 70px; }
+table.quote-table th:nth-child(4), table.quote-table td:nth-child(4) { min-width: 150px; }
+table.quote-table th, table.quote-table td { padding-left: 6px; padding-right: 6px; }
+table.quote-table td.part-no { min-width: 90px; }
